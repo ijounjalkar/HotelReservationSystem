@@ -10,13 +10,9 @@ public class HotelReservation {
 	 public static List<Hotel> hotelList = new ArrayList<>();
 	
 	
-	public void AddHotel(String HotelName, int weekdayRate) {
-		Hotel H1 = new Hotel ("Lakewood" , 110);
-		Hotel H2 = new Hotel ("Bridgewood" , 160);
-		Hotel H3 = new Hotel ("Ridgewood" , 220);
+	public void AddHotel(String HotelName, int weekdayRate, int weekendRate) {
+		Hotel H1 = new Hotel (HotelName, weekdayRate, weekendRate  );
 		hotelList.add(H1);
-		hotelList.add(H2);
-		hotelList.add(H3);
 		
 	}
 	public static LocalDate stringToLocalDate(String value) {
@@ -25,7 +21,7 @@ public class HotelReservation {
 		return localDate;
 	}
 	/**
-	 * UC2 cheapest Hotel
+	 * UC3
 	 * @param String departure
 	 * @param String arrival
 	 * @return
@@ -47,6 +43,9 @@ public class HotelReservation {
 		System.out.println("Cheapest Hotel: " +cheapHotel+ ", Rates: $" +cost);
 		return cheapHotel;
 		
+	}
+	public int size() {
+		return hotelList.size();
 	}
 	
 	/*
