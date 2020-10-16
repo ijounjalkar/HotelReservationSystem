@@ -4,7 +4,7 @@ public class Hotel {
 
 	String HotelName;
 	int weekdayRate;
-	private int weekendRate;
+	int weekendRate;
 
 	public String getname() {
 		return HotelName;

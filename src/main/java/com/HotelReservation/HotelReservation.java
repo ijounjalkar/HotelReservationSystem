@@ -1,8 +1,10 @@
 package com.HotelReservation;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,20 +23,44 @@ public class HotelReservation {
 		return localDate;
 	}
 	/**
-	 * UC3
+	 * UC4
 	 * @param String departure
 	 * @param String arrival
 	 * @return
 	 */
+	public static int[] noOfDays(String arrival, String departure) {
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
+		LocalDate from = LocalDate.parse(arrival, dateFormat);
+		LocalDate to = LocalDate.parse(departure, dateFormat);
+		int numOfWeekdays = 0;
+		int numOfWeekends = 0;
+		for (LocalDate date = from; date.isBefore(to.plusDays(1)); date = date.plusDays(1)) {
+			DayOfWeek day = DayOfWeek.of(date.get(ChronoField.DAY_OF_WEEK)); 
+			switch (day) {
+			case SATURDAY:
+				numOfWeekends++;
+				break;
+			case SUNDAY:
+				numOfWeekends++;
+				break;
+			default:
+				numOfWeekdays++;
+				break;
+			}
+		}
+		return new int[] { numOfWeekdays, numOfWeekends };
+	}
 	public static String cheapestHotel(String arrival, String departure) {
 		LocalDate localDate1 = stringToLocalDate(arrival);
 		LocalDate localDate2 = stringToLocalDate(departure);
 		
-		int days = (int)Period.between(localDate1, localDate2).getDays();
+		int[] noOfDays = noOfDays(arrival,departure);
 		int cost = Integer.MAX_VALUE;
 		String cheapHotel = "";
 		for(Hotel hotel: hotelList) {
-			int newCost = hotel.weekdayRate*days;
+			int newCost1 = hotel.weekdayRate*noOfDays[0] ;
+			int newcost2 = hotel.weekendRate*noOfDays[1];
+			int newCost = newCost1 + newcost2;
 			if(newCost < cost) {
 				cheapHotel = hotel.HotelName;
 				cost = newCost;
